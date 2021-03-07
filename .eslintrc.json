@@ -30,6 +30,8 @@
     ],
     "root": true,
     "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+
         //"getter-returns": "error",
         "no-compare-neg-zero": "error",
         "no-console": "warn",
@@ -52,7 +54,7 @@
         "use-isnan": "error",
 
         "block-scoped-var": "error",
-        "complexity": ["error", 4],
+        "complexity": ["error", 10],
         "default-case-last": "error",
         "no-constructor-return": "error",
         "no-empty-function": "error",
@@ -86,7 +88,7 @@
         "semi-style": ["error", "last"],
         //"sort-keys": ["error", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
         "space-before-blocks": "error",
-        "space-before-function-paren": ["error", "never"],
+        "space-before-function-paren": ["error", { "asyncArrow": "always", "named": "never" }],
         "space-infix-ops": "error",
         "space-unary-ops": ["error", {"words": true, "nonwords": false}],
         "spaced-comment": ["error", "always", { "exceptions": ["-", "+"] }],
@@ -96,5 +98,13 @@
         "no-duplicate-imports": "error",
         "no-const-assign": "error",
         "prefer-const": "error"
-    }
+    },
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "rules": {
+              "@typescript-eslint/explicit-module-boundary-types": "off"
+            }
+          }
+    ]
 }

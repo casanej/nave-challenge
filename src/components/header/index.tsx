@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useStores } from '../../stores';
+import { HeaderStyle } from './index.style';
 
-interface Props { }
+const Header = () => {
+    const { authStore } = useStores();
 
-const Header = (props: Props) => {
-    useEffect(() => {
-        console.log('[Header] Started with success');
-    }, []);
     return (
-        <div>Header</div>
+        <HeaderStyle>
+            <div>
+                <a href='/'> <img src='http://casanje.com/projects/nave-rs/assets/logo.png' height='37' /> </a>
+            </div>
+            <div style={{cursor: 'pointer'}} onClick={authStore.logout}>Sair</div>
+        </HeaderStyle>
     );
 };
 

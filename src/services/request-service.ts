@@ -1,0 +1,88 @@
+import { ApiResponse } from 'models';
+import { AuthStore } from '../stores/auth-store'
+
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+export default class RequestService {
+    private authStore: AuthStore;
+
+    private BASE_URL = process.env.API_URL;
+
+    constructor() {
+        if (window?.__stores__) {
+            this.authStore = window.__stores__.authStore;
+        }
+    }
+
+    private errorTreatment = <TData>(error: unknown) => {
+        console.warn(error);
+        return this.formatResponse<TData>(false, undefined, 'Erro desconhecido. Contate o administrador para mais informações.')
+    }
+
+    private formatResponse = <TData>(isOk: boolean, data?: TData, message?: string): ApiResponse<TData> => {
+        if (!isOk) {
+            return { success: false, error: `${message}` }
+        }
+
+        return { success: true, data: data as TData };
+    }
+
+    private responseTreatment = async <IResponse>(response: Response): Promise<ApiResponse<IResponse>> => {
+        if (!response.ok) {
+            if (response.status === 400) return this.formatResponse<IResponse>(false, undefined, 'Houve um erro com a requisição, revise os dados enviados e tente novamente.');
+            if (response.status === 401) return this.formatResponse<IResponse>(false, undefined, 'Você não tem permissão para realizar essa operação.');
+            if (response.status === 404) return this.formatResponse<IResponse>(false, undefined, 'Não foi possível achar o conteúdo especificado.');
+
+            return this.formatResponse<IResponse>(false, undefined, 'Houve algum erro com a requisição. Tente novamente mais tarde ou contate um administrador');
+        }
+
+        const data = await response.json() as IResponse
+        return this.formatResponse<IResponse>(true, data)
+    }
+
+    public requestAuth = async <TData>(endpoint: string, method: RequestMethod, payload: unknown): Promise<ApiResponse<TData>> => await this.makeRequestAuth<TData>(endpoint, method, payload);
+
+    private makeRequestAuth = <TData>(endpoint: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => {
+        const token = this.authStore.user.token;
+        let headers: HeadersInit = { 'Content-Type': 'application/json' };
+
+        if (token) headers = { ...headers, Authorization: `bearer ${token}` };
+
+        return fetch(
+            `${this.BASE_URL}${endpoint}`,
+            {
+                method: method,
+                body: payload ? JSON.stringify(payload) : null,
+                headers: headers,
+            },
+        )
+            .then(response => {
+                if (!response.ok) {
+                    // TODO LOG HERE
+                }
+
+                return response.json();
+            })
+            .catch(err => ({ success: false, error: err }));
+    };
+
+    public request = async <TData>(route: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => {
+        const endpoint = `${this.BASE_URL}${route}`
+
+        try {
+            const response = await fetch(
+                endpoint,
+                {
+                    method: method,
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'application/json' },
+                },
+            )
+
+            return this.responseTreatment<TData>(response);
+        } catch (error) {
+            return this.errorTreatment(error);
+        }
+    }
+
+}

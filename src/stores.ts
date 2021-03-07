@@ -1,26 +1,25 @@
 import React, { useContext } from 'react';
-import { WebsiteThemeSupported } from './assets';
-import { Teste } from './stores/teste';
+import { AuthStore } from './stores/auth-store';
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     interface Window {
-        __theme__: {
-            type: WebsiteThemeSupported
+        __stores__: {
+            authStore: AuthStore;
         }
     }
 }
 
-const teste = new Teste();
+const authStore = new AuthStore();
 
 const stores = {
-    teste,
-};
+    authStore
+}
 
 if (typeof window !== 'undefined') {
-    if (!window.__theme__) {
-        window.__theme__ = {
-            type: localStorage.getItem('websiteTheme') as WebsiteThemeSupported || 'dark',
+    if (!window.__stores__) {
+        window.__stores__ = {
+            authStore,
         };
     }
 }

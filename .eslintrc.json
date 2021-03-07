@@ -76,7 +76,7 @@
         "indent": ["error", 4],
         "jsx-quotes": ["error", "prefer-single"],
         "key-spacing": ["error", { "afterColon": true}],
-        "lines-between-class-members": ["error", "always"],
+        //"lines-between-class-members": ["error", {"exceptAfterSingleLine": true}],
         "max-depth": ["error", 4],
         "no-mixed-spaces-and-tabs": "error",
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1, "maxBOF": 0 }],

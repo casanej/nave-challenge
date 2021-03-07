@@ -40,30 +40,31 @@ export default class RequestService {
         return this.formatResponse<IResponse>(true, data)
     }
 
-    public requestAuth = async <TData>(endpoint: string, method: RequestMethod, payload: unknown): Promise<ApiResponse<TData>> => await this.makeRequestAuth<TData>(endpoint, method, payload);
+    public requestAuth = async <TData>(endpoint: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => await this.makeRequestAuth<TData>(endpoint, method, payload);
 
-    private makeRequestAuth = <TData>(endpoint: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => {
+    private makeRequestAuth = async <TData>(route: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => {
+        const endpoint = `${this.BASE_URL}${route}`
+
         const token = this.authStore.user.token;
-        let headers: HeadersInit = { 'Content-Type': 'application/json' };
+        const headers = {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        };
 
-        if (token) headers = { ...headers, Authorization: `bearer ${token}` };
+        try {
+            const response = await fetch(
+                endpoint,
+                {
+                    method: method,
+                    body: JSON.stringify(payload),
+                    headers,
+                },
+            )
 
-        return fetch(
-            `${this.BASE_URL}${endpoint}`,
-            {
-                method: method,
-                body: payload ? JSON.stringify(payload) : null,
-                headers: headers,
-            },
-        )
-            .then(response => {
-                if (!response.ok) {
-                    // TODO LOG HERE
-                }
-
-                return response.json();
-            })
-            .catch(err => ({ success: false, error: err }));
+            return this.responseTreatment<TData>(response);
+        } catch (error) {
+            return this.errorTreatment(error);
+        }
     };
 
     public request = async <TData>(route: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => {

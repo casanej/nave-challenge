@@ -7,9 +7,9 @@ interface ContainerStyledProps {
 
 export const ContainerStyled = styled.div<ContainerStyledProps>`
     width: 75%;
-    height: 100vh;
     margin: 0 auto;
     display: flex;
+    flex-direction: column;
 
     background-color: ${props => props.theme.currentPallet.background.primary};
 

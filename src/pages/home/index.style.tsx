@@ -12,4 +12,7 @@ export const HomeNaversCard = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    justify-content: space-evenly;
+    
+    padding: 30px 0;
 `;

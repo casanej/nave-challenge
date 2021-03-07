@@ -28,7 +28,7 @@ const HomeApp = (): ReactElement => {
                         { showHeader && <Header />}
                         <Switch>
                             <Route exact path='/login' component={Login} />
-                            <ProtectedRoute exact path='/' component={Home} />
+                            <Route exact path='/' component={Home} />
                         </Switch>
                     </Router>
                 </React.Fragment>

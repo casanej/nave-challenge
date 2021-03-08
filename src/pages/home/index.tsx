@@ -16,24 +16,12 @@ export const Home = observer((): ReactElement => {
         });
     }, [naversStore.navers.length]);
 
-    const addNaver = () => {
-        console.log('[ADDING]');
-    }
-
-    const deleteNaver = (id: string) => {
-        naversStore.remove(id);
-    }
-
-    const editNaver = (name: string) => {
-        naversStore.startEdit(name);
-    }
-
     return (
         <Container>
             <NaverForm isOpen={naversStore.isOpen} />
             <HomeTopMenu>
                 <div><h1>Navers</h1></div>
-                <div><Button onClick={addNaver} >Adicionar Naver</Button></div>
+                <div><Button onClick={() => naversStore.startCreate()} >Adicionar Naver</Button></div>
             </HomeTopMenu>
             <HomeNaversCard>
                 {
@@ -41,11 +29,10 @@ export const Home = observer((): ReactElement => {
                         ? naversList.map(naver => <NaverCard
                             key={naver.id}
                             naverInfo={naver}
-                            edit={editNaver}
-                            delete={deleteNaver}
+                            edit={(name) => naversStore.startEdit(name)}
+                            delete={(id) => naversStore.remove(id)}
                         />)
                         : <h1>Não há Navers registrados</h1>
-
                 }
             </HomeNaversCard>
         </Container>

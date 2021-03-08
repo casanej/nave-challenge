@@ -3,6 +3,7 @@ import { NaversData } from '../../../stores/index';
 import { NaverCardBody, NaverCardContent, NaverCardSubtitles, NaverCardHeader, NaverCardStyle, NaverCardBlock, NaverCardFooter, NaverCardActionButton, NaverCardClose } from '../index.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPen, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { calculateDiff } from '../../../utils';
 
 interface Props {
     naverInfo: NaversData
@@ -32,11 +33,11 @@ export const NaverCardFullscreen = (props: Props): ReactElement => {
                     <div>{props.naverInfo.job_role}</div>
                     <NaverCardBlock>
                         <NaverCardSubtitles>Idade</NaverCardSubtitles>
-                        <div>{props.naverInfo.birthdate}</div>
+                        <div>{calculateDiff(props.naverInfo.birthdate, 'YY')}</div>
                     </NaverCardBlock>
                     <NaverCardBlock>
                         <NaverCardSubtitles>Tempo de empresa</NaverCardSubtitles>
-                        <div>{props.naverInfo.admission_date}</div>
+                        <div>{calculateDiff(props.naverInfo.admission_date, 'YY')}</div>
                     </NaverCardBlock>
                     <NaverCardBlock>
                         <NaverCardSubtitles>Projetos que participou</NaverCardSubtitles>

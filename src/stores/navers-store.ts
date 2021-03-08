@@ -1,24 +1,25 @@
 /* eslint-disable camelcase */
 import { configure, makeAutoObservable } from 'mobx';
 import RequestService from '../services/request-service';
+import { formatDate } from '../utils'
 configure({ enforceActions: 'never' });
 
 export interface NaversData {
     id: string;
     name: string;
-    admission_date: Date;
+    admission_date: string;
     job_role: string;
     user_id: string;
     project: string;
-    birthdate: Date;
+    birthdate: string;
     url: string;
 }
 
 export interface NaverBasicData {
     name: string;
     job_role: string;
-    birthdate: Date;
-    admission_date: Date;
+    birthdate: string;
+    admission_date: string;
     project: string;
     url: string;
 }
@@ -39,8 +40,8 @@ export class NaversStore {
     public naverBasicData: NaverBasicData = {
         name: '',
         job_role: '',
-        birthdate: new Date(),
-        admission_date: new Date(),
+        birthdate: '',
+        admission_date: '',
         project: '',
         url: ''
     }
@@ -67,11 +68,12 @@ export class NaversStore {
         const naver = naverResponse.data[0];
 
         this.naverBasicId = naver.id;
+        console.log('[MEU DEUS DO CEU]', naver.birthdate, formatDate(naver.birthdate, 'yyyy-mm-dd'));
         this.naverBasicData = {
             name: naver.name,
             job_role: naver.job_role,
-            birthdate: new Date(naver.birthdate),
-            admission_date: new Date(naver.admission_date),
+            birthdate: formatDate(naver.birthdate, 'yyyy-mm-dd'),
+            admission_date: formatDate(naver.admission_date, 'yyyy-mm-dd'),
             project: naver.project,
             url: naver.url
         }
@@ -82,8 +84,8 @@ export class NaversStore {
         this.naverBasicData = {
             name: '',
             job_role: '',
-            birthdate: new Date(),
-            admission_date: new Date(),
+            birthdate: '',
+            admission_date: '',
             project: '',
             url: ''
         }
@@ -113,9 +115,9 @@ export class NaversStore {
 
     activeFunction = (typeFunction: NaverFunctionActive, naver: NaverBasicData) => {
         switch (typeFunction) {
-            case 'create': this.saveCreate(naver); break;
-            case 'update': this.saveEdit(naver); break;
-            default: console.log('[NAVERSTORE] Function', typeFunction, 'not exist');
+        case 'create': this.saveCreate(naver); break;
+        case 'update': this.saveEdit(naver); break;
+        default: console.log('[NAVERSTORE] Function', typeFunction, 'not exist');
         }
     }
 

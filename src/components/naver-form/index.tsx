@@ -3,12 +3,13 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { observer } from 'mobx-react-lite';
 import React, { ReactElement, useEffect, useState } from 'react'
-import { NaverBasicData } from 'stores';
+import { NaverBasicData } from '../../stores/index';
 import { useStores } from '../../stores';
 import { FormGroup } from '../form-group';
 import { Button, Input } from '../inputs';
 import { NaverCardActionButton } from '../navers-card/index.style';
 import { ContainerNaveForm, NaverFormBody, NaverFormFooter, NaverFormHeader } from './index.style';
+import { formatDate } from '../../utils';
 
 interface Props {
     isOpen: boolean;
@@ -27,8 +28,8 @@ export const NaverForm = observer((props: Props): ReactElement | null => {
     useEffect(() => {
         setName(naversStore.naverBasicData.name)
         setJobRole(naversStore.naverBasicData.job_role)
-        setBirthdate(naversStore.naverBasicData.birthdate.toISOString().substr(0, 10))
-        setAdmissionDate(naversStore.naverBasicData.admission_date.toISOString().substr(0, 10))
+        setBirthdate(formatDate(naversStore.naverBasicData.birthdate, 'yyyy-mm-dd'))
+        setAdmissionDate(formatDate(naversStore.naverBasicData.admission_date, 'yyyy-mm-dd'))
         setProject(naversStore.naverBasicData.project)
         setUrl(naversStore.naverBasicData.url)
     }, [naversStore.naverBasicData.name])
@@ -37,8 +38,8 @@ export const NaverForm = observer((props: Props): ReactElement | null => {
         const naver: NaverBasicData = {
             name,
             job_role: jobRole,
-            birthdate: new Date(birthdate).toLocaleDateString(),
-            admission_date: new Date(admissionDate).toLocaleDateString(),
+            birthdate: formatDate(birthdate, 'dd-mm-aaaa'),
+            admission_date: formatDate(admissionDate, 'dd-mm-aaaa'),
             project,
             url,
         }
@@ -56,7 +57,7 @@ export const NaverForm = observer((props: Props): ReactElement | null => {
         <ContainerNaveForm>
             <NaverFormHeader onClick={handleClose}>
                 <NaverCardActionButton ><FontAwesomeIcon icon={faAngleLeft} /></NaverCardActionButton>
-                <div>Editar Naver</div>
+                <div>{naversStore.title}</div>
             </NaverFormHeader>
             <NaverFormBody>
                 <FormGroup>

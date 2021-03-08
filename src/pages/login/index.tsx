@@ -17,7 +17,7 @@ export const Login = (): ReactElement => {
     }
 
     return (
-        <Container alignVertical alignHorizontal>
+        <Container alignVertical alignHorizontal fullscreen>
             <FormLogin>
                 <div>
                     <img src='http://casanje.com/projects/nave-rs/assets/logo.png' />

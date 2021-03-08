@@ -4,15 +4,9 @@ import { AuthStore } from '../stores/auth-store'
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export default class RequestService {
-    private authStore: AuthStore;
+    private authStore: AuthStore = window?.__stores__?.authStore;
 
     private BASE_URL = process.env.API_URL;
-
-    constructor() {
-        if (window?.__stores__) {
-            this.authStore = window.__stores__.authStore;
-        }
-    }
 
     private errorTreatment = <TData>(error: unknown) => {
         console.warn(error);
@@ -45,7 +39,8 @@ export default class RequestService {
     private makeRequestAuth = async <TData>(route: string, method: RequestMethod, payload?: unknown): Promise<ApiResponse<TData>> => {
         const endpoint = `${this.BASE_URL}${route}`
 
-        const token = this.authStore.user.token;
+        // const token = this.authStore.user.token;
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg3N2VjZjY0LWJjMzUtNGE5YS05MjJhLWY3ODhkZTY0YzcxNiIsImVtYWlsIjoicmFmYWVsLmNhc2FuamVAZ21haWwuY29tIiwiaWF0IjoxNjE1MTY2MjgyfQ.RipV9QUGVH_00VbUD6dtodV155wHPSbs0S6ihBNQ3hk';
         const headers = {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`

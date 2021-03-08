@@ -4,6 +4,7 @@ import { InputStyled } from './index.style';
 interface Props {
     label: string;
     id: string;
+    value?: string;
     name?: string;
     type?: string;
     placeholder?: string;
@@ -18,6 +19,7 @@ export const Input = (props: Props): ReactElement => {
                 id={props.id}
                 name={props.name}
                 type={props.type ? props.type : 'text'}
+                value={props.value}
                 placeholder={props.placeholder}
                 onChange={(e) => props.onChange(e.target.value, props.name || 'default')}
             />

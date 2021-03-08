@@ -5,6 +5,7 @@ interface Props {
     children: ReactElement | ReactElement[];
     alignVertical?: boolean;
     alignHorizontal?: boolean;
+    fullscreen?: boolean;
 }
 
 export const Container = (props: Props): ReactElement => {
@@ -12,6 +13,7 @@ export const Container = (props: Props): ReactElement => {
         <ContainerStyled
             alignVertical={props.alignVertical}
             alignHorizontal={props.alignHorizontal}
+            fullscreen={props.fullscreen}
         >
             {props.children}
         </ContainerStyled>

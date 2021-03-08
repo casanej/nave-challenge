@@ -1,16 +1,16 @@
-import { Button, Container, NaverCard } from '../../components';
+import { Button, Container, NaverCard, NaverForm } from '../../components';
 import React, { ReactElement, useEffect, useState } from 'react'
 import { HomeNaversCard, HomeTopMenu } from './index.style';
-import { NaversData, NaversStore } from '../../stores/index';
+import { NaversData } from '../../stores/index';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { useStores } from '../../stores';
 
 export const Home = observer((): ReactElement => {
-    const naversStore = new NaversStore();
+    const { naversStore } = useStores();
     const [naversList, setNaversList] = useState<NaversData[]>();
 
     useEffect(() => {
-        console.log('START UPDATE')
         naversStore.getAllNavers().then(() => {
             setNaversList(toJS(naversStore.navers));
         });
@@ -24,12 +24,13 @@ export const Home = observer((): ReactElement => {
         naversStore.remove(id);
     }
 
-    const editNaver = (id: string) => {
-        console.log('[edit naver]', id);
+    const editNaver = (name: string) => {
+        naversStore.startEdit(name);
     }
 
     return (
         <Container>
+            <NaverForm isOpen={naversStore.isOpen} />
             <HomeTopMenu>
                 <div><h1>Navers</h1></div>
                 <div><Button onClick={addNaver} >Adicionar Naver</Button></div>

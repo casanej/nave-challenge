@@ -44,7 +44,7 @@ export const NaverCardFullscreen = (props: Props): ReactElement => {
                     </NaverCardBlock>
                     <NaverCardFooter>
                         <NaverCardActionButton onClick={() => props.delete(props.naverInfo.id)} ><FontAwesomeIcon icon={faTrash} /></NaverCardActionButton>
-                        <NaverCardActionButton onClick={() => props.edit(props.naverInfo.id)} ><FontAwesomeIcon icon={faPen} /></NaverCardActionButton>
+                        <NaverCardActionButton onClick={() => props.edit(props.naverInfo.name)} ><FontAwesomeIcon icon={faPen} /></NaverCardActionButton>
                     </NaverCardFooter>
                 </NaverCardBody>
             </NaverCardContent>

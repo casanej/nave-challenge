@@ -38,7 +38,7 @@ export const NaverCard = (props: Props): ReactElement => {
                 </NaverCardBody>
                 <NaverCardFooter>
                     <NaverCardActionButton onClick={() => handleDelete(props.naverInfo.id)} ><FontAwesomeIcon icon={faTrash} /></NaverCardActionButton>
-                    <NaverCardActionButton onClick={() => props.edit(props.naverInfo.id)} ><FontAwesomeIcon icon={faPen} /></NaverCardActionButton>
+                    <NaverCardActionButton onClick={() => props.edit(props.naverInfo.name)} ><FontAwesomeIcon icon={faPen} /></NaverCardActionButton>
                 </NaverCardFooter>
             </NaverCardStyle>
         </>

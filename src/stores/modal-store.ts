@@ -7,7 +7,7 @@ export interface ModalContent {
 
 export interface ModalButton {
     text: React.ReactNode;
-    type: 'info' | 'success' | 'error' | 'warning' | 'dark';
+    type: 'info' | 'success' | 'error' | 'warning' | 'dark' | 'light';
     function?: () => void;
 }
 
@@ -33,8 +33,6 @@ export class ModalStore {
     }
 
     nextModal(): ModalContent | null {
-
-        // const filterModals = this.queue.filter(modal => modal.bypass === true);
         try {
             if (this.queue.length > 0) return this.queue.pop().modal;
 

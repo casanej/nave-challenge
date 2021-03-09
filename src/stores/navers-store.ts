@@ -48,12 +48,14 @@ export class NaversStore {
 
     constructor() {
         this.navers = [];
-        this.isLoading = false;
+        this.isLoading = true;
         makeAutoObservable(this);
     }
 
     getAllNavers = async () => {
         const navers = await this.requestService.requestAuth<NaversData[]>('/navers', 'GET');
+
+        this.isLoading = false;
 
         if (!navers.success) return;
 
@@ -68,7 +70,6 @@ export class NaversStore {
         const naver = naverResponse.data[0];
 
         this.naverBasicId = naver.id;
-        console.log('[MEU DEUS DO CEU]', naver.birthdate, formatDate(naver.birthdate, 'yyyy-mm-dd'));
         this.naverBasicData = {
             name: naver.name,
             job_role: naver.job_role,
@@ -91,6 +92,10 @@ export class NaversStore {
         }
         this.isOpen = false;
         this.title = '';
+    }
+
+    startRemove = (id: string) => {
+        window.__stores__.modalStore.addQueue({ key: 'naver_remover', type: 'info', urgency: 0, bypass: false, isPersistent: false, modal: { content: 'Tem certeza que deseja excluir esse naver ?', header: 'Excluir Naver', buttons: [{ text: 'Fechar', type: 'light' }, { function: () => this.remove(id), text: 'Remover', type: 'dark' }] } });
     }
 
     remove = async (id: string) => {
@@ -123,35 +128,25 @@ export class NaversStore {
     saveEdit = async (naver: NaverBasicData) => {
         const editSaving = await this.requestService.requestAuth(`/navers/${this.naverBasicId}`, 'PUT', naver);
 
+        this.resetNaver();
+
         if (editSaving.success === false) return;
 
-        this.resetNaver();
+        window.__stores__.modalStore.addQueue({ key: 'naver_editado', type: 'info', urgency: 0, bypass: false, isPersistent: false, modal: { content: 'Naver atualizado com sucesso!', header: 'Naver atualizado', buttons: [{ text: 'Fechar', type: 'dark' }] } });
+
+        this.getAllNavers();
     }
 
     saveCreate = async (naver: NaverBasicData) => {
         const createSaving = await this.requestService.requestAuth('/navers', 'POST', naver);
 
+        this.resetNaver();
+
         if (createSaving.success === false) return;
 
-        window.__stores__.modalStore.addQueue({
-            key: 'naver_criado',
-            type: 'info',
-            urgency: 0,
-            bypass: false,
-            isPersistent: false,
-            modal: {
-                content: 'Naver criado com sucesso!',
-                header: 'Naver criado',
-                buttons: [
-                    {
-                        text: 'Fechar',
-                        type: 'success'
-                    }
-                ]
-            }
-        });
+        window.__stores__.modalStore.addQueue({ key: 'naver_criado', type: 'info', urgency: 0, bypass: false, isPersistent: false, modal: { content: 'Naver criado com sucesso!', header: 'Naver criado', buttons: [{ text: 'Fechar', type: 'dark' }] } });
 
-        this.resetNaver();
+        this.getAllNavers();
     }
 
 }

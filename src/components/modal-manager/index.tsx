@@ -4,7 +4,7 @@ import { ModalContent } from '../../stores/index';
 import { useStores } from '../../stores';
 
 const ModalManager = () => {
-    const { modalStore } = useStores();
+    const modalStore = window.__stores__.modalStore;
 
     const [isOpen, setIsOpen] = useState<boolean>(true);
     const [currentModal, setCurrentModal] = useState<ModalContent | null | undefined>(null);
@@ -16,29 +16,13 @@ const ModalManager = () => {
     };
 
     useEffect(() => {
-        console.log('[ModalManager] Started with success');
-        modalStore.addQueue({
-            key: 'naver_criado',
-            type: 'info',
-            urgency: 0,
-            bypass: false,
-            isPersistent: false,
-            modal: {
-                content: 'Naver criado com sucesso!',
-                header: 'Naver criado',
-                buttons: [
-                    {
-                        text: 'Fechar',
-                        type: 'dark'
-                    }
-                ]
-            }
-        });
-    }, []);
+        setInterval(callNextModal, 250);
+        callNextModal();
+    })
 
     useEffect(() => {
         callNextModal();
-    }, [modalStore?.queue.length]);
+    }, [modalStore.queue]);
 
     const callNextModal = () => {
         if (modalStore && currentModal === null) {

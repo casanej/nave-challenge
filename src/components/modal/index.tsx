@@ -1,6 +1,8 @@
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ModalButton } from '../../stores/index';
+import { NaverCardActionButton } from '../navers-card/index.style';
 import { StyledModal, StyledModalBackground, StyledModalFooter, StyledModalHeader, StyledModalBody, StyledModalButton } from './index.style';
 
 interface Props {
@@ -20,6 +22,11 @@ const Modal = (props: Props) => {
         if (target.id === 'modalBlackout') props.onClose();
     };
 
+    const handleFunction = (execFunc: () => void) => {
+        execFunc();
+        props.onClose();
+    }
+
     return (
         <StyledModalBackground
             id='modalBlackout'
@@ -34,14 +41,14 @@ const Modal = (props: Props) => {
             >
                 <StyledModalHeader>
                     <div>{props.header}</div>
-                    <div><FontAwesomeIcon icon='times' onClick={props.onClose} /></div>
+                    <NaverCardActionButton><FontAwesomeIcon icon={faTimes} onClick={props.onClose} /></NaverCardActionButton>
                 </StyledModalHeader>
                 <StyledModalBody> {props.children} </StyledModalBody>
                 {
                     props.buttons &&
                     <StyledModalFooter>
                         {
-                            props.buttons.map((button, index:number) => <StyledModalButton key={index} type={button.type} onClick={button.function || props.onClose}>{button.text}</StyledModalButton>)
+                            props.buttons.map((button, index:number) => <StyledModalButton key={index} type={button.type} onClick={() => handleFunction(button.function || props.onClose)}>{button.text}</StyledModalButton>)
                         }
                     </StyledModalFooter>
                 }

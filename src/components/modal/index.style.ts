@@ -14,18 +14,18 @@ interface ButtonProps {
 
 function getMaxWidth(size: string) {
     switch (size) {
-        case 'xs':
-            return '575px';
-        case 'sm':
-            return '767px';
-        case 'md':
-            return '991px';
-        case 'lg':
-            return '1200px';
-        case 'xl':
-            return '1700px';
-        default:
-            return '575px';
+    case 'xs':
+        return '575px';
+    case 'sm':
+        return '767px';
+    case 'md':
+        return '991px';
+    case 'lg':
+        return '1200px';
+    case 'xl':
+        return '1700px';
+    default:
+        return '575px';
     }
 }
 
@@ -157,6 +157,11 @@ const StyledModalButton = styled.div<ButtonProps>`
     ${props => props.type === 'dark' && `
         background-color: black;
         color: white;
+    `}
+
+    ${props => props.type === 'light' && `
+        background-color: white;
+        color: black;
     `}
 
     padding: 0 10px;

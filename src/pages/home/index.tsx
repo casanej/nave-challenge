@@ -11,10 +11,12 @@ export const Home = observer((): ReactElement => {
     const [naversList, setNaversList] = useState<NaversData[]>();
 
     useEffect(() => {
-        naversStore.getAllNavers().then(() => {
-            setNaversList(toJS(naversStore.navers));
-        });
-    }, [naversStore.navers.length]);
+        naversStore.getAllNavers();
+    }, [])
+
+    useEffect(() => {
+        setNaversList(toJS(naversStore.navers));
+    }, [JSON.stringify(naversStore.navers)]);
 
     return (
         <Container>
@@ -25,14 +27,19 @@ export const Home = observer((): ReactElement => {
             </HomeTopMenu>
             <HomeNaversCard>
                 {
-                    naversList
-                        ? naversList.map(naver => <NaverCard
+                    naversStore.isLoading && <h1>Carregando Navers...</h1>
+                }
+                {
+                    !naversStore.isLoading && naversList &&
+                        naversList.map(naver => <NaverCard
                             key={naver.id}
                             naverInfo={naver}
                             edit={(name) => naversStore.startEdit(name)}
-                            delete={(id) => naversStore.remove(id)}
+                            delete={(id) => naversStore.startRemove(id)}
                         />)
-                        : <h1>Não há Navers registrados</h1>
+                }
+                {
+                    !naversStore.isLoading && naversList?.length === 0 && <h1>Não há Navers registrados</h1>
                 }
             </HomeNaversCard>
         </Container>

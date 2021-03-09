@@ -53,3 +53,7 @@ npx serve ./dist
 ```
 
 Verifique a porta que foi disponibilizada, acesse o link e verifique o projeto em modo produção
+
+## Todo
+
+Para a finalização completa desse projeto até a data desse README, falta realizar a correção do build do Parcel. Parece que alguma configuração falta ser implementada no package ou alguma configuração complementar. Ao rodar o comando `build` a geração do arquivo é feita corretamente mas é feita na pasta `src/assets` gerando os arquivos `.js` e sobrescrevendo o arquivo `index.html`.

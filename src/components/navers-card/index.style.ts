@@ -58,6 +58,62 @@ export const NaverCardStyle = styled.div<{ fullscreen?: boolean; }>`
             }
         }
     `}
+
+    @media (max-width: 900px) {
+        width: 16rem;
+
+        ${props => props.fullscreen && `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(100, 100, 100, .75);
+            z-index: 9999;
+
+            ${NaverCardContent} {
+                display: flex;
+                flex-direction: column;
+                width: 70%;
+                align-items: center;
+
+                div {
+                    background-color: white;
+                }
+
+                ${NaverCardHeader} {
+                    box-shadow: none;
+                    transition: none;
+                    width: 70%;
+                    border-radius: 10px 10px 0px 0px;
+
+                    &:hover {
+                        cursor: context-menu;
+                        transform: scale(1.0);
+                        transition: none;
+                    }
+
+                    img {
+                        border-radius: 10px 10px 0px 0px;
+                    }
+                }
+
+                ${NaverCardBody} {
+                    margin: 0;
+                    width: 66%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    border-radius: 0px 0px 10px 10px;
+                    position: relative;
+                    padding-left: 20px;
+                }
+            }
+        `}
+    }
 `
 
 export const NaverCardSubtitles = styled.p`

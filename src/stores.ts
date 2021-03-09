@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthStore } from './stores/auth-store';
+import { ModalStore } from './stores/modal-store';
 import { NaversStore } from './stores/navers-store';
 
 declare global {
@@ -8,23 +9,27 @@ declare global {
         __stores__: {
             authStore: AuthStore;
             naversStore: NaversStore;
+            modalStore: ModalStore;
         }
     }
 }
 
 const authStore = new AuthStore();
 const naversStore = new NaversStore();
+const modalStore = new ModalStore();
 
 const stores = {
     authStore,
-    naversStore
+    naversStore,
+    modalStore
 }
 
 if (typeof window !== 'undefined') {
     if (!window.__stores__) {
         window.__stores__ = {
             authStore,
-            naversStore
+            naversStore,
+            modalStore
         };
     }
 }

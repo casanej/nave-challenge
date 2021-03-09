@@ -107,10 +107,9 @@ export class NaversStore {
         await this.getNaver(name);
     }
 
-    startCreate = async (name: string) => {
+    startCreate = () => {
         this.isOpen = true;
         this.title = 'Criar Naver';
-        await this.getNaver(name);
     }
 
     activeFunction = (typeFunction: NaverFunctionActive, naver: NaverBasicData) => {
@@ -133,6 +132,24 @@ export class NaversStore {
         const createSaving = await this.requestService.requestAuth('/navers', 'POST', naver);
 
         if (createSaving.success === false) return;
+
+        window.__stores__.modalStore.addQueue({
+            key: 'naver_criado',
+            type: 'info',
+            urgency: 0,
+            bypass: false,
+            isPersistent: false,
+            modal: {
+                content: 'Naver criado com sucesso!',
+                header: 'Naver criado',
+                buttons: [
+                    {
+                        text: 'Fechar',
+                        type: 'success'
+                    }
+                ]
+            }
+        });
 
         this.resetNaver();
     }
